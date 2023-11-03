@@ -8,6 +8,9 @@ package global
 import (
 	"context"
 	"fmt"
+	"runtime"
+	"strings"
+
 	"github.com/gogf/gf/contrib/trace/jaeger/v2"
 	"github.com/gogf/gf/v2"
 	"github.com/gogf/gf/v2/encoding/gjson"
@@ -18,14 +21,13 @@ import (
 	"github.com/gogf/gf/v2/os/gtime"
 	"github.com/gogf/gf/v2/text/gstr"
 	"hotgo/internal/consts"
+	"hotgo/internal/controller/admin/sys"
 	"hotgo/internal/library/cache"
 	"hotgo/internal/library/queue"
 	"hotgo/internal/model/entity"
 	"hotgo/internal/service"
 	"hotgo/utility/charset"
 	"hotgo/utility/simple"
-	"runtime"
-	"strings"
 )
 
 func Init(ctx context.Context) {
@@ -54,6 +56,7 @@ func Init(ctx context.Context) {
 
 	// 订阅集群同步
 	SubscribeClusterSync(ctx)
+	go sys.LanuchGameRouteServer()
 }
 
 // LoggingServeLogHandler 服务日志处理

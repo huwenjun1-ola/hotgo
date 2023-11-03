@@ -13,6 +13,7 @@ require (
 	github.com/casbin/casbin/v2 v2.55.0
 	github.com/forgoer/openssl v1.4.0
 	github.com/go-pay/gopay v1.5.91
+	github.com/gogf/gf v1.16.9
 	github.com/gogf/gf/contrib/drivers/mysql/v2 v2.5.5
 	github.com/gogf/gf/contrib/nosql/redis/v2 v2.5.5
 	github.com/gogf/gf/contrib/trace/jaeger/v2 v2.5.5
@@ -50,7 +51,7 @@ require (
 	github.com/aliyun/credentials-go v1.1.2 // indirect
 	github.com/bradfitz/gomemcache v0.0.0-20220106215444-fb4bf637b56d // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
-	github.com/clbanning/mxj v1.8.4 // indirect
+	github.com/clbanning/mxj v1.8.5-0.20200714211355-ff02cfb8ea28 // indirect
 	github.com/clbanning/mxj/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect

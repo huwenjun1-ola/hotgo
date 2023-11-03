@@ -7,6 +7,7 @@ package genrouter
 
 import (
 	"context"
+
 	"github.com/gogf/gf/v2/net/ghttp"
 	"hotgo/internal/consts"
 	"hotgo/internal/service"
@@ -21,12 +22,14 @@ var (
 // Register 注册通过代码生成的后台路由
 func Register(ctx context.Context, group *ghttp.RouterGroup) {
 	group.Group(simple.RouterPrefix(ctx, consts.AppAdmin), func(group *ghttp.RouterGroup) {
-		if len(NoLoginRouter) > 0 {
-			group.Bind(NoLoginRouter...)
-		}
 		group.Middleware(service.Middleware().AdminAuth)
 		if len(LoginRequiredRouter) > 0 {
 			group.Bind(LoginRequiredRouter...)
+		}
+	})
+	group.Group(simple.RouterPrefix(ctx, "GameRoute"), func(group *ghttp.RouterGroup) {
+		if len(NoLoginRouter) > 0 {
+			group.Bind(NoLoginRouter...)
 		}
 	})
 }

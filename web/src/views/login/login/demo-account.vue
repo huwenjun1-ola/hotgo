@@ -27,14 +27,14 @@
       username: 'admin',
       password: '123456',
     },
+    // {
+    //   label: '管理员',
+    //   username: 'test',
+    //   password: '123456',
+    // },
     {
-      label: '管理员',
-      username: 'test',
-      password: '123456',
-    },
-    {
-      label: '代理商',
-      username: 'ameng',
+      label: '研发',
+      username: 'dev',
       password: '123456',
     },
   ];
