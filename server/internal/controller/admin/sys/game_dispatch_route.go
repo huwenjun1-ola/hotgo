@@ -80,7 +80,7 @@ func route(w http.ResponseWriter, req *http.Request) {
 			g.Log().Error(ctx, err)
 			return
 		}
-		http.Redirect(w, req, fmt.Sprintf("http://%s%s/home", ip, g.Cfg().MustGet(ctx, "server.address").String()), http.StatusFound)
+		http.Redirect(w, req, fmt.Sprintf("http://%s%s/web", ip, g.Cfg().MustGet(ctx, "server.address").String()), http.StatusFound)
 		return
 	}
 	factoryType := path[:strings.Index(path, "/")]

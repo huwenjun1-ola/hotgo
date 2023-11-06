@@ -22,11 +22,11 @@
   const emit = defineEmits<Emits>();
 
   const accounts = [
-    {
-      label: '超级管理员',
-      username: 'admin',
-      password: '123456',
-    },
+    // {
+    //   label: '超级管理员',
+    //   username: 'admin',
+    //   password: '123456',
+    // },
     // {
     //   label: '管理员',
     //   username: 'test',
