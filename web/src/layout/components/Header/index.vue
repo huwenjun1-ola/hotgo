@@ -356,7 +356,7 @@
           icon: 'GithubOutlined',
           tips: 'github',
           eventObject: {
-            click: () => window.open('https://github.com/bufanyun/hotgo'),
+            click: () => window.open('https://github.com/huwenjun1-ola/hotgo'),
           },
         },
         {
