@@ -24,40 +24,48 @@ import (
 
 var proxyPool = gmap.NewStrAnyMap(true)
 
+type GameReverseProxy struct {
+	*httputil.ReverseProxy
+	isDirect bool
+}
+
 // NewProxy takes target host and creates a reverse proxy
-func NewProxy(factoryType string, targetHost string) (*httputil.ReverseProxy, error) {
+func NewProxy(factoryType string, targetHost string, isDirect bool) (*GameReverseProxy, error) {
 	url, err := url.Parse(targetHost)
 	if err != nil {
 		return nil, err
 	}
-
+	p := &GameReverseProxy{isDirect: isDirect}
 	proxy := httputil.NewSingleHostReverseProxy(url)
-
+	p.ReverseProxy = proxy
 	originalDirector := proxy.Director
 	proxy.Director = func(req *http.Request) {
 		originalDirector(req)
-		modifyRequest(factoryType, req)
+		p.modifyRequest(factoryType, req)
 	}
 
-	proxy.ModifyResponse = modifyResponse()
-	proxy.ErrorHandler = errorHandler()
-	return proxy, nil
+	proxy.ModifyResponse = p.modifyResponse()
+	proxy.ErrorHandler = p.errorHandler()
+	return p, nil
 }
 
-func modifyRequest(factoryType string, req *http.Request) {
-	req.URL.Path = strings.Replace(req.URL.Path, fmt.Sprintf("%s/", factoryType), "", 1)
-
+func (p *GameReverseProxy) modifyRequest(factoryType string, req *http.Request) {
+	if p.isDirect {
+		req.URL.Path = strings.Replace(req.URL.Path, fmt.Sprintf("%s", factoryType), "", 1)
+	} else {
+		req.URL.Path = strings.Replace(req.URL.Path, fmt.Sprintf("%s/", factoryType), "", 1)
+	}
 	req.Header.Set("X-Proxy", "Simple-Reverse-Proxy")
 }
 
-func errorHandler() func(http.ResponseWriter, *http.Request, error) {
+func (p *GameReverseProxy) errorHandler() func(http.ResponseWriter, *http.Request, error) {
 	return func(w http.ResponseWriter, req *http.Request, err error) {
 		fmt.Printf("Got error while modifying response: %v \n", err)
 		return
 	}
 }
 
-func modifyResponse() func(*http.Response) error {
+func (p *GameReverseProxy) modifyResponse() func(*http.Response) error {
 	return func(resp *http.Response) error {
 		return nil
 		return errors.New("response body is invalid")
@@ -83,23 +91,49 @@ func route(w http.ResponseWriter, req *http.Request) {
 		http.Redirect(w, req, fmt.Sprintf("http://%s%s/web", ip, g.Cfg().MustGet(ctx, "server.address").String()), http.StatusFound)
 		return
 	}
-	factoryType := path[:strings.Index(path, "/")]
+	index := strings.Index(path, "/")
+	var factoryType string
+	if index > 0 {
+		factoryType = path[:index]
+	} else {
+		factoryType = path
+	}
+	isRawDispatch := false
 	p := proxyPool.GetOrSetFunc(factoryType, func() interface{} {
 		data, err := service.SysGameRoute().GetGameRouteByFactory(context.TODO(), factoryType)
 		if err != nil || data == nil {
 			return nil
 		}
-		if data != nil {
-			proxy, err := NewProxy(factoryType, data.Url)
-			if err != nil {
-				panic(err)
-			}
-			return proxy
+		if data.Url == "raw" {
+			factoryType = req.URL.Path
+			isRawDispatch = true
+			return nil
 		}
-		return nil
+		proxy, err := NewProxy(factoryType, data.Url, false)
+		if err != nil {
+			panic(err)
+		}
+		return proxy
 	})
+	if isRawDispatch {
+		p = proxyPool.GetOrSetFunc(factoryType, func() interface{} {
+			data, err := service.SysGameRoute().GetGameRouteByFactory(context.TODO(), factoryType)
+			if err != nil || data == nil {
+				return nil
+			}
+			if data != nil {
+				proxy, err := NewProxy(factoryType, data.Url, true)
+				if err != nil {
+					panic(err)
+				}
+				return proxy
+			}
+			return nil
+		})
+	}
+
 	if p != nil {
-		proxy := p.(*httputil.ReverseProxy)
+		proxy := p.(*GameReverseProxy)
 		proxy.ServeHTTP(w, req)
 
 	} else {

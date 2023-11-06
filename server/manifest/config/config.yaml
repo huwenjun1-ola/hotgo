@@ -240,7 +240,7 @@ database:
     level: "all"
     stdout: true
   default:
-    link: "mysql:root:123456@tcp(127.0.0.1:3306)/hotgo?loc=Local&parseTime=true"
+    link: "mysql:root:tablegame@tcp(192.168.11.48:3306)/hotgo?loc=Local&parseTime=true"
     debug: true
     Prefix: "hg_"
 

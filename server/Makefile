@@ -110,3 +110,7 @@ deploy:
 	kustomize build > $(ROOT_DIR)/temp/kustomize.yaml;\
 	kubectl   apply -f $(ROOT_DIR)/temp/kustomize.yaml; \
 	kubectl   patch -n $(NAMESPACE) deployment/$(DEPLOY_NAME) -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"date\":\"$(shell date +%s)\"}}}}}";
+
+.PHONY: build48
+build48:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
