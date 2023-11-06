@@ -17,6 +17,8 @@ import (
 	"strings"
 
 	"github.com/gogf/gf/v2/container/gmap"
+	"github.com/gogf/gf/v2/frame/g"
+	"hotgo/internal/library/location"
 	"hotgo/internal/service"
 )
 
@@ -71,6 +73,16 @@ func ProxyRequestHandler(proxy *httputil.ReverseProxy) func(http.ResponseWriter,
 func route(w http.ResponseWriter, req *http.Request) {
 	path := req.URL.Path
 	path = path[1:]
+	if len(path) == 0 {
+		ctx := context.TODO()
+		ip, err := location.GetLocalIP()
+		if err != nil {
+			g.Log().Error(ctx, err)
+			return
+		}
+		http.Redirect(w, req, fmt.Sprintf("http://%s%s/home", ip, g.Cfg().MustGet(ctx, "server.address").String()), http.StatusFound)
+		return
+	}
 	factoryType := path[:strings.Index(path, "/")]
 	p := proxyPool.GetOrSetFunc(factoryType, func() interface{} {
 		data, err := service.SysGameRoute().GetGameRouteByFactory(context.TODO(), factoryType)
@@ -104,5 +116,6 @@ func LanuchGameRouteServer() {
 
 	// handle all requests to your server using the proxy
 	http.HandleFunc("/", route)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	address := g.Cfg().MustGet(context.TODO(), "server.RouteMapAddress").String()
+	log.Fatal(http.ListenAndServe(address, nil))
 }
