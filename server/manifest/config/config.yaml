@@ -90,7 +90,7 @@ tcp:
 
 # 统一默认日志配置
 defaultLogger: &defaultLogger
-  level: "all"
+  level: "info"
   flags: 42
   file: "{Y-m-d}.log"                     # 日志文件格式。默认为"{Y-m-d}.log"
   stdoutColorDisabled: false              # 关闭终端的颜色打印。默认开启
