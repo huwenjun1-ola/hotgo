@@ -43,6 +43,9 @@ func NewProxy(factoryType string, targetHost string, isDirect bool) (*GameRevers
 	proxy.Director = func(req *http.Request) {
 		p.modifyRequest(factoryType, req)
 		originalDirector(req)
+		if p.isDirect {
+			req.URL = p.url
+		}
 	}
 
 	proxy.ModifyResponse = p.modifyResponse()
@@ -52,7 +55,7 @@ func NewProxy(factoryType string, targetHost string, isDirect bool) (*GameRevers
 
 func (p *GameReverseProxy) modifyRequest(factoryType string, req *http.Request) {
 	index := strings.Index(req.URL.Path, factoryType)
-	if index > 0 {
+	if index >= 0 {
 		req.URL.Path = req.URL.Path[index+len(factoryType):]
 		req.Header.Set("X-Proxy", "Simple-Reverse-Proxy")
 	}
