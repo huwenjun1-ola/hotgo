@@ -27,6 +27,7 @@ var proxyPool = gmap.NewStrAnyMap(true)
 type GameReverseProxy struct {
 	*httputil.ReverseProxy
 	isDirect bool
+	url      *url.URL
 }
 
 // NewProxy takes target host and creates a reverse proxy
@@ -35,13 +36,13 @@ func NewProxy(factoryType string, targetHost string, isDirect bool) (*GameRevers
 	if err != nil {
 		return nil, err
 	}
-	p := &GameReverseProxy{isDirect: isDirect}
+	p := &GameReverseProxy{isDirect: isDirect, url: url}
 	proxy := httputil.NewSingleHostReverseProxy(url)
 	p.ReverseProxy = proxy
 	originalDirector := proxy.Director
 	proxy.Director = func(req *http.Request) {
-		originalDirector(req)
 		p.modifyRequest(factoryType, req)
+		originalDirector(req)
 	}
 
 	proxy.ModifyResponse = p.modifyResponse()
@@ -50,12 +51,11 @@ func NewProxy(factoryType string, targetHost string, isDirect bool) (*GameRevers
 }
 
 func (p *GameReverseProxy) modifyRequest(factoryType string, req *http.Request) {
-	if p.isDirect {
-		req.URL.Path = strings.Replace(req.URL.Path, fmt.Sprintf("%s", factoryType), "", 1)
-	} else {
-		req.URL.Path = strings.Replace(req.URL.Path, fmt.Sprintf("%s/", factoryType), "", 1)
+	index := strings.Index(req.URL.Path, factoryType)
+	if index > 0 {
+		req.URL.Path = req.URL.Path[index+len(factoryType):]
+		req.Header.Set("X-Proxy", "Simple-Reverse-Proxy")
 	}
-	req.Header.Set("X-Proxy", "Simple-Reverse-Proxy")
 }
 
 func (p *GameReverseProxy) errorHandler() func(http.ResponseWriter, *http.Request, error) {
