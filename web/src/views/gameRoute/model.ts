@@ -63,10 +63,10 @@ export const schemas = ref<FormSchema[]>([
 ]);
 
 export const columns = [
-  {
-    title: 'id',
-    key: 'id',
-  },
+  // {
+  //   title: 'id',
+  //   key: 'id',
+  // },
   {
     title: '房型',
     key: 'factoryType',
