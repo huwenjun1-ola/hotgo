@@ -9,6 +9,7 @@ import { getFileExt } from '@/utils/urlUtils';
 import { defRangeShortcuts, defShortcuts, formatToDate } from '@/utils/dateUtil';
 import { validate } from '@/utils/validateUtil';
 import { getOptionLabel, getOptionTag, Options, errorImg } from '@/utils/hotgo';
+import {Switch} from "@/api/addons/hgexample/table";
 
 
 export interface State {
@@ -18,6 +19,7 @@ export interface State {
   type: string;
   answerRects: string;
   dir: string;
+  desc: string;
 }
 
 export const defaultState: State = {
@@ -27,6 +29,7 @@ export const defaultState: State = {
   type: '',
   answerRects: '',
   dir: '',
+  desc: '',
 };
 
 export function newState(state: State | null): State {
@@ -73,10 +76,22 @@ export const rules = {
 export const schemas = ref<FormSchema[]>([
   {
     field: 'levelId',
-    component: 'NInputNumber',
+    component: 'NInput',
     label: '关卡id',
     componentProps: {
       placeholder: '请输入关卡id',
+      onUpdateValue: (e: any) => {
+        console.log(e);
+      },
+    },
+  },
+  {
+    field: 'type',
+    component: 'NInput',
+    label: '图片主题',
+
+    componentProps: {
+      placeholder: '请输入图片主题类型',
       onUpdateValue: (e: any) => {
         console.log(e);
       },
@@ -90,7 +105,7 @@ export const columns = [
     key: 'levelId',
   },
   {
-    title: '图片主题类型',
+    title: '图片主题',
     key: 'type',
   },
   {
@@ -101,7 +116,7 @@ export const columns = [
         width: 32,
         height: 32,
         src: row.imgA,
-        fallbackSrc: errorImg,
+        // fallbackSrc: errorImg,
         style: {
           width: '32px',
           height: '32px',
@@ -119,7 +134,7 @@ export const columns = [
         width: 32,
         height: 32,
         src: row.imgB,
-        fallbackSrc: errorImg,
+        // fallbackSrc: errorImg,
         style: {
           width: '32px',
           height: '32px',
@@ -135,7 +150,18 @@ export const columns = [
     key: 'answerRects',
   },
   {
-    title: '朝向',
+    title: '水平',
     key: 'dir',
+    render(row) {
+      return h(NSwitch, {
+        value: row.dir === 0,
+        checked: '水平',
+        unchecked: '垂直',
+      });
+    },
+  },
+  {
+    title: '描述',
+    key: 'desc',
   },
 ];

@@ -17,4 +17,5 @@ type GameDiffLevelConfig struct {
 	Type        interface{} // 图片主题类型
 	AnswerRects interface{} //
 	Dir         interface{} // 0 左右 1 上下
+	Desc        interface{} // 描述字段，用于内部区分
 }

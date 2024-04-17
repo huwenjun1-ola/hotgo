@@ -26,7 +26,7 @@
             <FileChooser v-model:value="params.imgB" file-type="image" />
           </n-form-item>
 
-          <n-form-item label="图片主题类型" path="type">
+          <n-form-item label="图片主题" path="type">
           <n-input placeholder="请输入图片主题类型" v-model:value="params.type" />
           </n-form-item>
 
@@ -34,11 +34,13 @@
           <n-input style="height: 200px" placeholder="请输入answer_rects" v-model:value="params.answerRects" />
           </n-form-item>
 
-          <n-form-item label="朝向" path="dir">
-          <n-input placeholder="请输入0 左右 1 上下" v-model:value="params.dir" />
+          <n-form-item label="左右" path="dir">
+          <n-switch placeholder="请输入0 左右 1 上下" v-model:value="params.dir" :unchecked-value="1" :checked-value="0"/>
           </n-form-item>
 
-
+          <n-form-item label="描述" path="desc">
+            <n-input placeholder="用于信息备注，不会被导出" v-model:value="params.desc" />
+          </n-form-item>
         </n-form>
         <template #action>
           <n-space>
@@ -118,7 +120,7 @@
 
   function loadForm(value) {
     // 新增
-    if (value.id < 1) {
+    if (value.levelId < 1) {
       params.value = newState(value);
       loading.value = false;
       return;
@@ -126,7 +128,7 @@
 
     loading.value = true;
     // 编辑
-    View({ id: value.id })
+    View({ levelId: value.levelId })
       .then((res) => {
         params.value = res;
       })
@@ -138,6 +140,7 @@
   watch(
     () => props.formParams,
     (value) => {
+      console.log(value)
       loadForm(value);
     }
   );

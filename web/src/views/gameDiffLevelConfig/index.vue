@@ -23,7 +23,7 @@
         :openChecked="true"
         :columns="columns"
         :request="loadDataTable"
-        :row-key="(row) => row.id"
+        :row-key="(row) => row.levelId"
         ref="actionRef"
         :actionColumn="actionColumn"
         @update:checked-row-keys="onCheckedRow"

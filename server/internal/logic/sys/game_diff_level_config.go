@@ -9,6 +9,7 @@ package sys
 import (
 	"context"
 	"fmt"
+
 	"hotgo/internal/dao"
 	"hotgo/internal/library/hgorm/handler"
 	"hotgo/internal/model/input/form"
@@ -46,7 +47,9 @@ func (s *sSysGameDiffLevelConfig) List(ctx context.Context, in *sysin.GameDiffLe
 	if in.LevelId > 0 {
 		mod = mod.Where(dao.GameDiffLevelConfig.Columns().LevelId, in.LevelId)
 	}
-
+	if in.Type != "" {
+		mod = mod.Where(dao.GameDiffLevelConfig.Columns().Type, in.Type)
+	}
 	totalCount, err = mod.Clone().Count()
 	if err != nil {
 		err = gerror.Wrap(err, "获取找茬关卡配置表数据行失败，请稍后重试！")

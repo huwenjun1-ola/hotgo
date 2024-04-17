@@ -26,6 +26,7 @@ type GameDiffLevelConfigColumns struct {
 	Type        string // 图片主题类型
 	AnswerRects string //
 	Dir         string // 0 左右 1 上下
+	Desc        string // 描述字段，用于内部区分
 }
 
 // gameDiffLevelConfigColumns holds the columns for table hg_game_diff_level_config.
@@ -36,6 +37,7 @@ var gameDiffLevelConfigColumns = GameDiffLevelConfigColumns{
 	Type:        "type",
 	AnswerRects: "answer_rects",
 	Dir:         "dir",
+	Desc:        "desc",
 }
 
 // NewGameDiffLevelConfigDao creates and returns a new DAO object for table data access.

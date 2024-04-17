@@ -8,6 +8,7 @@ package sysin
 
 import (
 	"context"
+
 	"hotgo/internal/model/entity"
 	"hotgo/internal/model/input/form"
 
@@ -21,6 +22,7 @@ type GameDiffLevelConfigUpdateFields struct {
 	Type        string `json:"type"        dc:"图片主题类型"`
 	AnswerRects string `json:"answerRects" dc:"answer_rects"`
 	Dir         string `json:"dir"         dc:"0 左右 1 上下"`
+	Desc        string `json:"desc"         dc:"描述"`
 }
 
 // GameDiffLevelConfigInsertFields 新增找茬关卡配置表字段过滤
@@ -30,6 +32,7 @@ type GameDiffLevelConfigInsertFields struct {
 	Type        string `json:"type"        dc:"图片主题类型"`
 	AnswerRects string `json:"answerRects" dc:"answer_rects"`
 	Dir         string `json:"dir"         dc:"0 左右 1 上下"`
+	Desc        string `json:"desc"         dc:"描述"`
 }
 
 // GameDiffLevelConfigEditInp 修改/新增找茬关卡配置表
@@ -95,7 +98,8 @@ type GameDiffLevelConfigViewModel struct {
 // GameDiffLevelConfigListInp 获取找茬关卡配置表列表
 type GameDiffLevelConfigListInp struct {
 	form.PageReq
-	LevelId int `json:"levelId" dc:"关卡id"`
+	LevelId int    `json:"levelId" dc:"关卡id"`
+	Type    string `json:"type"        dc:"图片主题类型"`
 }
 
 func (in *GameDiffLevelConfigListInp) Filter(ctx context.Context) (err error) {
@@ -109,6 +113,7 @@ type GameDiffLevelConfigListModel struct {
 	Type        string `json:"type"        dc:"图片主题类型"`
 	AnswerRects string `json:"answerRects" dc:"answer_rects"`
 	Dir         string `json:"dir"         dc:"0 左右 1 上下"`
+	Desc        string `json:"desc"         dc:"描述"`
 }
 
 // GameDiffLevelConfigExportModel 导出找茬关卡配置表
