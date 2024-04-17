@@ -18,17 +18,49 @@ import (
 )
 
 type (
-	ISysAttachment interface {
-		// Model ORM模型
-		Model(ctx context.Context, option ...*handler.Option) *gdb.Model
-		// Delete 删除附件
-		Delete(ctx context.Context, in *sysin.AttachmentDeleteInp) (err error)
-		// View 获取附件信息
-		View(ctx context.Context, in *sysin.AttachmentViewInp) (res *sysin.AttachmentViewModel, err error)
-		// List 获取附件列表
-		List(ctx context.Context, in *sysin.AttachmentListInp) (list []*sysin.AttachmentListModel, totalCount int, err error)
-		// ClearKind 清空上传类型
-		ClearKind(ctx context.Context, in *sysin.AttachmentClearKindInp) (err error)
+	ISysProvinces interface {
+		// Tree 关系树选项列表
+		Tree(ctx context.Context) (list []*sysin.ProvincesTree, err error)
+		// Delete 删除省市区数据
+		Delete(ctx context.Context, in *sysin.ProvincesDeleteInp) (err error)
+		// Edit 修改/新增省市区数据
+		Edit(ctx context.Context, in *sysin.ProvincesEditInp) (err error)
+		// Status 更新省市区状态
+		Status(ctx context.Context, in *sysin.ProvincesStatusInp) (err error)
+		// MaxSort 最大排序
+		MaxSort(ctx context.Context, in *sysin.ProvincesMaxSortInp) (res *sysin.ProvincesMaxSortModel, err error)
+		// View 获取省市区信息
+		View(ctx context.Context, in *sysin.ProvincesViewInp) (res *sysin.ProvincesViewModel, err error)
+		// List 获取列表
+		List(ctx context.Context, in *sysin.ProvincesListInp) (list []*sysin.ProvincesListModel, totalCount int, err error)
+		// ChildrenList 获取省市区下级列表
+		ChildrenList(ctx context.Context, in *sysin.ProvincesChildrenListInp) (list []*sysin.ProvincesChildrenListModel, totalCount int, err error)
+		// UniqueId 获取省市区下级列表
+		UniqueId(ctx context.Context, in *sysin.ProvincesUniqueIdInp) (res *sysin.ProvincesUniqueIdModel, err error)
+		// Select 省市区选项
+		Select(ctx context.Context, in *sysin.ProvincesSelectInp) (res *sysin.ProvincesSelectModel, err error)
+	}
+	ISysServeLog interface {
+		// Model 服务日志Orm模型
+		Model(ctx context.Context) *gdb.Model
+		// List 获取服务日志列表
+		List(ctx context.Context, in *sysin.ServeLogListInp) (list []*sysin.ServeLogListModel, totalCount int, err error)
+		// Export 导出服务日志
+		Export(ctx context.Context, in *sysin.ServeLogListInp) (err error)
+		// Delete 删除服务日志
+		Delete(ctx context.Context, in *sysin.ServeLogDeleteInp) (err error)
+		// View 获取服务日志指定信息
+		View(ctx context.Context, in *sysin.ServeLogViewInp) (res *sysin.ServeLogViewModel, err error)
+		// RealWrite 真实写入
+		RealWrite(ctx context.Context, models entity.SysServeLog) (err error)
+	}
+	ISysAddonsConfig interface {
+		// GetConfigByGroup 获取指定分组的配置
+		GetConfigByGroup(ctx context.Context, in *sysin.GetAddonsConfigInp) (res *sysin.GetAddonsConfigModel, err error)
+		// ConversionType 转换类型
+		ConversionType(ctx context.Context, models *entity.SysAddonsConfig) (value interface{}, err error)
+		// UpdateConfigByGroup 更新指定分组的配置
+		UpdateConfigByGroup(ctx context.Context, in *sysin.UpdateAddonsConfigInp) (err error)
 	}
 	ISysBlacklist interface {
 		// Delete 删除
@@ -92,6 +124,42 @@ type (
 		// ClusterSync 集群同步
 		ClusterSync(ctx context.Context, message *gredis.Message)
 	}
+	ISysEmsLog interface {
+		// Delete 删除
+		Delete(ctx context.Context, in *sysin.EmsLogDeleteInp) (err error)
+		// Edit 修改/新增
+		Edit(ctx context.Context, in *sysin.EmsLogEditInp) (err error)
+		// Status 更新部门状态
+		Status(ctx context.Context, in *sysin.EmsLogStatusInp) (err error)
+		// View 获取指定字典类型信息
+		View(ctx context.Context, in *sysin.EmsLogViewInp) (res *sysin.EmsLogViewModel, err error)
+		// List 获取列表
+		List(ctx context.Context, in *sysin.EmsLogListInp) (list []*sysin.EmsLogListModel, totalCount int, err error)
+		// Send 发送邮件
+		Send(ctx context.Context, in *sysin.SendEmsInp) (err error)
+		// GetTemplate 获取指定邮件模板
+		GetTemplate(ctx context.Context, template string, config *model.EmailConfig) (val string, err error)
+		// AllowSend 是否允许发送
+		AllowSend(ctx context.Context, models *entity.SysEmsLog, config *model.EmailConfig) (err error)
+		// NowDayCount 当天发送次数
+		NowDayCount(ctx context.Context, event, email string) (count int, err error)
+		// VerifyCode 效验验证码
+		VerifyCode(ctx context.Context, in *sysin.VerifyEmsCodeInp) (err error)
+	}
+	ISysGameDiffLevelConfig interface {
+		// Model 找茬关卡配置表ORM模型
+		Model(ctx context.Context, option ...*handler.Option) *gdb.Model
+		// List 获取找茬关卡配置表列表
+		List(ctx context.Context, in *sysin.GameDiffLevelConfigListInp) (list []*sysin.GameDiffLevelConfigListModel, totalCount int, err error)
+		// Export 导出找茬关卡配置表
+		Export(ctx context.Context, in *sysin.GameDiffLevelConfigListInp) (err error)
+		// Edit 修改/新增找茬关卡配置表
+		Edit(ctx context.Context, in *sysin.GameDiffLevelConfigEditInp) (err error)
+		// Delete 删除找茬关卡配置表
+		Delete(ctx context.Context, in *sysin.GameDiffLevelConfigDeleteInp) (err error)
+		// View 获取找茬关卡配置表指定信息
+		View(ctx context.Context, in *sysin.GameDiffLevelConfigViewInp) (res *sysin.GameDiffLevelConfigViewModel, err error)
+	}
 	ISysLog interface {
 		// Export 导出
 		Export(ctx context.Context, in *sysin.LogListInp) (err error)
@@ -107,6 +175,105 @@ type (
 		Delete(ctx context.Context, in *sysin.LogDeleteInp) (err error)
 		// List 列表
 		List(ctx context.Context, in *sysin.LogListInp) (list []*sysin.LogListModel, totalCount int, err error)
+	}
+	ISysAttachment interface {
+		// Model ORM模型
+		Model(ctx context.Context, option ...*handler.Option) *gdb.Model
+		// Delete 删除附件
+		Delete(ctx context.Context, in *sysin.AttachmentDeleteInp) (err error)
+		// View 获取附件信息
+		View(ctx context.Context, in *sysin.AttachmentViewInp) (res *sysin.AttachmentViewModel, err error)
+		// List 获取附件列表
+		List(ctx context.Context, in *sysin.AttachmentListInp) (list []*sysin.AttachmentListModel, totalCount int, err error)
+		// ClearKind 清空上传类型
+		ClearKind(ctx context.Context, in *sysin.AttachmentClearKindInp) (err error)
+	}
+	ISysCron interface {
+		StartCron(ctx context.Context)
+		// Delete 删除
+		Delete(ctx context.Context, in *sysin.CronDeleteInp) (err error)
+		// Edit 修改/新增
+		Edit(ctx context.Context, in *sysin.CronEditInp) (err error)
+		// Status 更新状态
+		Status(ctx context.Context, in *sysin.CronStatusInp) (err error)
+		// MaxSort 最大排序
+		MaxSort(ctx context.Context, in *sysin.CronMaxSortInp) (res *sysin.CronMaxSortModel, err error)
+		// View 获取指定信息
+		View(ctx context.Context, in *sysin.CronViewInp) (res *sysin.CronViewModel, err error)
+		// List 获取列表
+		List(ctx context.Context, in *sysin.CronListInp) (list []*sysin.CronListModel, totalCount int, err error)
+		// GetName 获取分组名称
+		GetName(ctx context.Context, id int64) (name string, err error)
+		// OnlineExec 在线执行
+		OnlineExec(ctx context.Context, in *sysin.OnlineExecInp) (err error)
+	}
+	ISysCurdDemo interface {
+		// Model 生成演示ORM模型
+		Model(ctx context.Context, option ...*handler.Option) *gdb.Model
+		// List 获取生成演示列表
+		List(ctx context.Context, in *sysin.CurdDemoListInp) (list []*sysin.CurdDemoListModel, totalCount int, err error)
+		// Export 导出生成演示
+		Export(ctx context.Context, in *sysin.CurdDemoListInp) (err error)
+		// Edit 修改/新增生成演示
+		Edit(ctx context.Context, in *sysin.CurdDemoEditInp) (err error)
+		// Delete 删除生成演示
+		Delete(ctx context.Context, in *sysin.CurdDemoDeleteInp) (err error)
+		// MaxSort 获取生成演示最大排序
+		MaxSort(ctx context.Context, in *sysin.CurdDemoMaxSortInp) (res *sysin.CurdDemoMaxSortModel, err error)
+		// View 获取生成演示指定信息
+		View(ctx context.Context, in *sysin.CurdDemoViewInp) (res *sysin.CurdDemoViewModel, err error)
+		// Status 更新生成演示状态
+		Status(ctx context.Context, in *sysin.CurdDemoStatusInp) (err error)
+		// Switch 更新生成演示开关
+		Switch(ctx context.Context, in *sysin.CurdDemoSwitchInp) (err error)
+	}
+	ISysDictType interface {
+		// Tree 树
+		Tree(ctx context.Context) (list []*sysin.DictTypeTree, err error)
+		// Delete 删除
+		Delete(ctx context.Context, in *sysin.DictTypeDeleteInp) (err error)
+		// Edit 修改/新增
+		Edit(ctx context.Context, in *sysin.DictTypeEditInp) (err error)
+		// TreeSelect 获取类型关系树选项
+		TreeSelect(ctx context.Context, in *sysin.DictTreeSelectInp) (list []*sysin.DictTypeTree, err error)
+	}
+	ISysLoginLog interface {
+		// Model 登录日志Orm模型
+		Model(ctx context.Context) *gdb.Model
+		// List 获取登录日志列表
+		List(ctx context.Context, in *sysin.LoginLogListInp) (list []*sysin.LoginLogListModel, totalCount int, err error)
+		// Export 导出登录日志
+		Export(ctx context.Context, in *sysin.LoginLogListInp) (err error)
+		// Delete 删除登录日志
+		Delete(ctx context.Context, in *sysin.LoginLogDeleteInp) (err error)
+		// View 获取登录日志指定信息
+		View(ctx context.Context, in *sysin.LoginLogViewInp) (res *sysin.LoginLogViewModel, err error)
+		// Push 推送登录日志
+		Push(ctx context.Context, in *sysin.LoginLogPushInp)
+		// RealWrite 真实写入
+		RealWrite(ctx context.Context, models entity.SysLoginLog) (err error)
+	}
+	ISysSmsLog interface {
+		// Delete 删除
+		Delete(ctx context.Context, in *sysin.SmsLogDeleteInp) (err error)
+		// Edit 修改/新增
+		Edit(ctx context.Context, in *sysin.SmsLogEditInp) (err error)
+		// Status 更新短信状态
+		Status(ctx context.Context, in *sysin.SmsLogStatusInp) (err error)
+		// View 获取指定字典类型信息
+		View(ctx context.Context, in *sysin.SmsLogViewInp) (res *sysin.SmsLogViewModel, err error)
+		// List 获取列表
+		List(ctx context.Context, in *sysin.SmsLogListInp) (list []*sysin.SmsLogListModel, totalCount int, err error)
+		// SendCode 发送验证码
+		SendCode(ctx context.Context, in *sysin.SendCodeInp) (err error)
+		// GetTemplate 获取指定短信模板
+		GetTemplate(ctx context.Context, template string, config *model.SmsConfig) (val string, err error)
+		// AllowSend 是否允许发送
+		AllowSend(ctx context.Context, models *entity.SysSmsLog, config *model.SmsConfig) (err error)
+		// NowDayCount 当天发送次数
+		NowDayCount(ctx context.Context, event, mobile string) (count int, err error)
+		// VerifyCode 效验验证码
+		VerifyCode(ctx context.Context, in *sysin.VerifyCodeInp) (err error)
 	}
 	ISysGenCodes interface {
 		// Delete 删除
@@ -152,46 +319,19 @@ type (
 		// AssignRouter 分配服务许可证路由
 		AssignRouter(ctx context.Context, in *sysin.ServeLicenseAssignRouterInp) (err error)
 	}
-	ISysSmsLog interface {
-		// Delete 删除
-		Delete(ctx context.Context, in *sysin.SmsLogDeleteInp) (err error)
-		// Edit 修改/新增
-		Edit(ctx context.Context, in *sysin.SmsLogEditInp) (err error)
-		// Status 更新短信状态
-		Status(ctx context.Context, in *sysin.SmsLogStatusInp) (err error)
-		// View 获取指定字典类型信息
-		View(ctx context.Context, in *sysin.SmsLogViewInp) (res *sysin.SmsLogViewModel, err error)
+	ISysAddons interface {
 		// List 获取列表
-		List(ctx context.Context, in *sysin.SmsLogListInp) (list []*sysin.SmsLogListModel, totalCount int, err error)
-		// SendCode 发送验证码
-		SendCode(ctx context.Context, in *sysin.SendCodeInp) (err error)
-		// GetTemplate 获取指定短信模板
-		GetTemplate(ctx context.Context, template string, config *model.SmsConfig) (val string, err error)
-		// AllowSend 是否允许发送
-		AllowSend(ctx context.Context, models *entity.SysSmsLog, config *model.SmsConfig) (err error)
-		// NowDayCount 当天发送次数
-		NowDayCount(ctx context.Context, event, mobile string) (count int, err error)
-		// VerifyCode 效验验证码
-		VerifyCode(ctx context.Context, in *sysin.VerifyCodeInp) (err error)
-	}
-	ISysCron interface {
-		StartCron(ctx context.Context)
-		// Delete 删除
-		Delete(ctx context.Context, in *sysin.CronDeleteInp) (err error)
-		// Edit 修改/新增
-		Edit(ctx context.Context, in *sysin.CronEditInp) (err error)
-		// Status 更新状态
-		Status(ctx context.Context, in *sysin.CronStatusInp) (err error)
-		// MaxSort 最大排序
-		MaxSort(ctx context.Context, in *sysin.CronMaxSortInp) (res *sysin.CronMaxSortModel, err error)
-		// View 获取指定信息
-		View(ctx context.Context, in *sysin.CronViewInp) (res *sysin.CronViewModel, err error)
-		// List 获取列表
-		List(ctx context.Context, in *sysin.CronListInp) (list []*sysin.CronListModel, totalCount int, err error)
-		// GetName 获取分组名称
-		GetName(ctx context.Context, id int64) (name string, err error)
-		// OnlineExec 在线执行
-		OnlineExec(ctx context.Context, in *sysin.OnlineExecInp) (err error)
+		List(ctx context.Context, in *sysin.AddonsListInp) (list []*sysin.AddonsListModel, totalCount int, err error)
+		// Selects 选项
+		Selects(ctx context.Context, in *sysin.AddonsSelectsInp) (res *sysin.AddonsSelectsModel, err error)
+		// Build 提交生成
+		Build(ctx context.Context, in *sysin.AddonsBuildInp) (err error)
+		// Install 安装模块
+		Install(ctx context.Context, in *sysin.AddonsInstallInp) (err error)
+		// Upgrade 更新模块
+		Upgrade(ctx context.Context, in *sysin.AddonsUpgradeInp) (err error)
+		// UnInstall 卸载模块
+		UnInstall(ctx context.Context, in *sysin.AddonsUnInstallInp) (err error)
 	}
 	ISysCronGroup interface {
 		// Delete 删除
@@ -209,26 +349,6 @@ type (
 		// Select 选项
 		Select(ctx context.Context, in *sysin.CronGroupSelectInp) (res *sysin.CronGroupSelectModel, err error)
 	}
-	ISysCurdDemo interface {
-		// Model 生成演示ORM模型
-		Model(ctx context.Context, option ...*handler.Option) *gdb.Model
-		// List 获取生成演示列表
-		List(ctx context.Context, in *sysin.CurdDemoListInp) (list []*sysin.CurdDemoListModel, totalCount int, err error)
-		// Export 导出生成演示
-		Export(ctx context.Context, in *sysin.CurdDemoListInp) (err error)
-		// Edit 修改/新增生成演示
-		Edit(ctx context.Context, in *sysin.CurdDemoEditInp) (err error)
-		// Delete 删除生成演示
-		Delete(ctx context.Context, in *sysin.CurdDemoDeleteInp) (err error)
-		// MaxSort 获取生成演示最大排序
-		MaxSort(ctx context.Context, in *sysin.CurdDemoMaxSortInp) (res *sysin.CurdDemoMaxSortModel, err error)
-		// View 获取生成演示指定信息
-		View(ctx context.Context, in *sysin.CurdDemoViewInp) (res *sysin.CurdDemoViewModel, err error)
-		// Status 更新生成演示状态
-		Status(ctx context.Context, in *sysin.CurdDemoStatusInp) (err error)
-		// Switch 更新生成演示开关
-		Switch(ctx context.Context, in *sysin.CurdDemoSwitchInp) (err error)
-	}
 	ISysDictData interface {
 		// Delete 删除
 		Delete(ctx context.Context, in *sysin.DictDataDeleteInp) error
@@ -244,110 +364,6 @@ type (
 		GetTypes(ctx context.Context, id int64) (types []string, err error)
 		// Select 获取列表
 		Select(ctx context.Context, in *sysin.DataSelectInp) (list sysin.DataSelectModel, err error)
-	}
-	ISysProvinces interface {
-		// Tree 关系树选项列表
-		Tree(ctx context.Context) (list []*sysin.ProvincesTree, err error)
-		// Delete 删除省市区数据
-		Delete(ctx context.Context, in *sysin.ProvincesDeleteInp) (err error)
-		// Edit 修改/新增省市区数据
-		Edit(ctx context.Context, in *sysin.ProvincesEditInp) (err error)
-		// Status 更新省市区状态
-		Status(ctx context.Context, in *sysin.ProvincesStatusInp) (err error)
-		// MaxSort 最大排序
-		MaxSort(ctx context.Context, in *sysin.ProvincesMaxSortInp) (res *sysin.ProvincesMaxSortModel, err error)
-		// View 获取省市区信息
-		View(ctx context.Context, in *sysin.ProvincesViewInp) (res *sysin.ProvincesViewModel, err error)
-		// List 获取列表
-		List(ctx context.Context, in *sysin.ProvincesListInp) (list []*sysin.ProvincesListModel, totalCount int, err error)
-		// ChildrenList 获取省市区下级列表
-		ChildrenList(ctx context.Context, in *sysin.ProvincesChildrenListInp) (list []*sysin.ProvincesChildrenListModel, totalCount int, err error)
-		// UniqueId 获取省市区下级列表
-		UniqueId(ctx context.Context, in *sysin.ProvincesUniqueIdInp) (res *sysin.ProvincesUniqueIdModel, err error)
-		// Select 省市区选项
-		Select(ctx context.Context, in *sysin.ProvincesSelectInp) (res *sysin.ProvincesSelectModel, err error)
-	}
-	ISysServeLog interface {
-		// Model 服务日志Orm模型
-		Model(ctx context.Context) *gdb.Model
-		// List 获取服务日志列表
-		List(ctx context.Context, in *sysin.ServeLogListInp) (list []*sysin.ServeLogListModel, totalCount int, err error)
-		// Export 导出服务日志
-		Export(ctx context.Context, in *sysin.ServeLogListInp) (err error)
-		// Delete 删除服务日志
-		Delete(ctx context.Context, in *sysin.ServeLogDeleteInp) (err error)
-		// View 获取服务日志指定信息
-		View(ctx context.Context, in *sysin.ServeLogViewInp) (res *sysin.ServeLogViewModel, err error)
-		// RealWrite 真实写入
-		RealWrite(ctx context.Context, models entity.SysServeLog) (err error)
-	}
-	ISysAddons interface {
-		// List 获取列表
-		List(ctx context.Context, in *sysin.AddonsListInp) (list []*sysin.AddonsListModel, totalCount int, err error)
-		// Selects 选项
-		Selects(ctx context.Context, in *sysin.AddonsSelectsInp) (res *sysin.AddonsSelectsModel, err error)
-		// Build 提交生成
-		Build(ctx context.Context, in *sysin.AddonsBuildInp) (err error)
-		// Install 安装模块
-		Install(ctx context.Context, in *sysin.AddonsInstallInp) (err error)
-		// Upgrade 更新模块
-		Upgrade(ctx context.Context, in *sysin.AddonsUpgradeInp) (err error)
-		// UnInstall 卸载模块
-		UnInstall(ctx context.Context, in *sysin.AddonsUnInstallInp) (err error)
-	}
-	ISysAddonsConfig interface {
-		// GetConfigByGroup 获取指定分组的配置
-		GetConfigByGroup(ctx context.Context, in *sysin.GetAddonsConfigInp) (res *sysin.GetAddonsConfigModel, err error)
-		// ConversionType 转换类型
-		ConversionType(ctx context.Context, models *entity.SysAddonsConfig) (value interface{}, err error)
-		// UpdateConfigByGroup 更新指定分组的配置
-		UpdateConfigByGroup(ctx context.Context, in *sysin.UpdateAddonsConfigInp) (err error)
-	}
-	ISysDictType interface {
-		// Tree 树
-		Tree(ctx context.Context) (list []*sysin.DictTypeTree, err error)
-		// Delete 删除
-		Delete(ctx context.Context, in *sysin.DictTypeDeleteInp) (err error)
-		// Edit 修改/新增
-		Edit(ctx context.Context, in *sysin.DictTypeEditInp) (err error)
-		// TreeSelect 获取类型关系树选项
-		TreeSelect(ctx context.Context, in *sysin.DictTreeSelectInp) (list []*sysin.DictTypeTree, err error)
-	}
-	ISysEmsLog interface {
-		// Delete 删除
-		Delete(ctx context.Context, in *sysin.EmsLogDeleteInp) (err error)
-		// Edit 修改/新增
-		Edit(ctx context.Context, in *sysin.EmsLogEditInp) (err error)
-		// Status 更新部门状态
-		Status(ctx context.Context, in *sysin.EmsLogStatusInp) (err error)
-		// View 获取指定字典类型信息
-		View(ctx context.Context, in *sysin.EmsLogViewInp) (res *sysin.EmsLogViewModel, err error)
-		// List 获取列表
-		List(ctx context.Context, in *sysin.EmsLogListInp) (list []*sysin.EmsLogListModel, totalCount int, err error)
-		// Send 发送邮件
-		Send(ctx context.Context, in *sysin.SendEmsInp) (err error)
-		// GetTemplate 获取指定邮件模板
-		GetTemplate(ctx context.Context, template string, config *model.EmailConfig) (val string, err error)
-		// AllowSend 是否允许发送
-		AllowSend(ctx context.Context, models *entity.SysEmsLog, config *model.EmailConfig) (err error)
-		// NowDayCount 当天发送次数
-		NowDayCount(ctx context.Context, event, email string) (count int, err error)
-		// VerifyCode 效验验证码
-		VerifyCode(ctx context.Context, in *sysin.VerifyEmsCodeInp) (err error)
-	}
-	ISysGameDiffLevelConfig interface {
-		// Model 找茬关卡配置表ORM模型
-		Model(ctx context.Context, option ...*handler.Option) *gdb.Model
-		// List 获取找茬关卡配置表列表
-		List(ctx context.Context, in *sysin.GameDiffLevelConfigListInp) (list []*sysin.GameDiffLevelConfigListModel, totalCount int, err error)
-		// Export 导出找茬关卡配置表
-		Export(ctx context.Context, in *sysin.GameDiffLevelConfigListInp) (err error)
-		// Edit 修改/新增找茬关卡配置表
-		Edit(ctx context.Context, in *sysin.GameDiffLevelConfigEditInp) (err error)
-		// Delete 删除找茬关卡配置表
-		Delete(ctx context.Context, in *sysin.GameDiffLevelConfigDeleteInp) (err error)
-		// View 获取找茬关卡配置表指定信息
-		View(ctx context.Context, in *sysin.GameDiffLevelConfigViewInp) (res *sysin.GameDiffLevelConfigViewModel, err error)
 	}
 	ISysGameRoute interface {
 		// Model 游戏路由ORM模型
@@ -365,100 +381,51 @@ type (
 		// List 获取游戏路由列表
 		GetGameRouteByFactory(ctx context.Context, factoryType string) (model *sysin.GameRouteListModel, err error)
 	}
-	ISysLoginLog interface {
-		// Model 登录日志Orm模型
-		Model(ctx context.Context) *gdb.Model
-		// List 获取登录日志列表
-		List(ctx context.Context, in *sysin.LoginLogListInp) (list []*sysin.LoginLogListModel, totalCount int, err error)
-		// Export 导出登录日志
-		Export(ctx context.Context, in *sysin.LoginLogListInp) (err error)
-		// Delete 删除登录日志
-		Delete(ctx context.Context, in *sysin.LoginLogDeleteInp) (err error)
-		// View 获取登录日志指定信息
-		View(ctx context.Context, in *sysin.LoginLogViewInp) (res *sysin.LoginLogViewModel, err error)
-		// Push 推送登录日志
-		Push(ctx context.Context, in *sysin.LoginLogPushInp)
-		// RealWrite 真实写入
-		RealWrite(ctx context.Context, models entity.SysLoginLog) (err error)
-	}
 )
 
 var (
-	localSysGenCodes            ISysGenCodes
-	localSysServeLicense        ISysServeLicense
-	localSysSmsLog              ISysSmsLog
-	localSysCron                ISysCron
-	localSysCronGroup           ISysCronGroup
-	localSysCurdDemo            ISysCurdDemo
-	localSysDictData            ISysDictData
-	localSysProvinces           ISysProvinces
-	localSysServeLog            ISysServeLog
-	localSysAddons              ISysAddons
-	localSysAddonsConfig        ISysAddonsConfig
-	localSysDictType            ISysDictType
+	localSysConfig              ISysConfig
 	localSysEmsLog              ISysEmsLog
 	localSysGameDiffLevelConfig ISysGameDiffLevelConfig
-	localSysGameRoute           ISysGameRoute
-	localSysLoginLog            ISysLoginLog
-	localSysAttachment          ISysAttachment
-	localSysBlacklist           ISysBlacklist
-	localSysConfig              ISysConfig
 	localSysLog                 ISysLog
+	localSysProvinces           ISysProvinces
+	localSysServeLog            ISysServeLog
+	localSysAddonsConfig        ISysAddonsConfig
+	localSysBlacklist           ISysBlacklist
+	localSysCurdDemo            ISysCurdDemo
+	localSysDictType            ISysDictType
+	localSysLoginLog            ISysLoginLog
+	localSysSmsLog              ISysSmsLog
+	localSysAttachment          ISysAttachment
+	localSysCron                ISysCron
+	localSysGenCodes            ISysGenCodes
+	localSysServeLicense        ISysServeLicense
+	localSysDictData            ISysDictData
+	localSysGameRoute           ISysGameRoute
+	localSysAddons              ISysAddons
+	localSysCronGroup           ISysCronGroup
 )
 
-func SysGameRoute() ISysGameRoute {
-	if localSysGameRoute == nil {
-		panic("implement not found for interface ISysGameRoute, forgot register?")
+func SysBlacklist() ISysBlacklist {
+	if localSysBlacklist == nil {
+		panic("implement not found for interface ISysBlacklist, forgot register?")
 	}
-	return localSysGameRoute
+	return localSysBlacklist
 }
 
-func RegisterSysGameRoute(i ISysGameRoute) {
-	localSysGameRoute = i
+func RegisterSysBlacklist(i ISysBlacklist) {
+	localSysBlacklist = i
 }
 
-func SysLoginLog() ISysLoginLog {
-	if localSysLoginLog == nil {
-		panic("implement not found for interface ISysLoginLog, forgot register?")
+func SysConfig() ISysConfig {
+	if localSysConfig == nil {
+		panic("implement not found for interface ISysConfig, forgot register?")
 	}
-	return localSysLoginLog
+	return localSysConfig
 }
 
-func RegisterSysLoginLog(i ISysLoginLog) {
-	localSysLoginLog = i
-}
-
-func SysAddons() ISysAddons {
-	if localSysAddons == nil {
-		panic("implement not found for interface ISysAddons, forgot register?")
-	}
-	return localSysAddons
-}
-
-func RegisterSysAddons(i ISysAddons) {
-	localSysAddons = i
-}
-
-func SysAddonsConfig() ISysAddonsConfig {
-	if localSysAddonsConfig == nil {
-		panic("implement not found for interface ISysAddonsConfig, forgot register?")
-	}
-	return localSysAddonsConfig
-}
-
-func RegisterSysAddonsConfig(i ISysAddonsConfig) {
-	localSysAddonsConfig = i
-}
-
-func SysDictType() ISysDictType {
-	if localSysDictType == nil {
-		panic("implement not found for interface ISysDictType, forgot register?")
-	}
-	return localSysDictType
-}
-
-func RegisterSysDictType(i ISysDictType) {
-	localSysDictType = i
+func RegisterSysConfig(i ISysConfig) {
+	localSysConfig = i
 }
 
 func SysEmsLog() ISysEmsLog {
@@ -483,39 +450,6 @@ func RegisterSysGameDiffLevelConfig(i ISysGameDiffLevelConfig) {
 	localSysGameDiffLevelConfig = i
 }
 
-func SysAttachment() ISysAttachment {
-	if localSysAttachment == nil {
-		panic("implement not found for interface ISysAttachment, forgot register?")
-	}
-	return localSysAttachment
-}
-
-func RegisterSysAttachment(i ISysAttachment) {
-	localSysAttachment = i
-}
-
-func SysBlacklist() ISysBlacklist {
-	if localSysBlacklist == nil {
-		panic("implement not found for interface ISysBlacklist, forgot register?")
-	}
-	return localSysBlacklist
-}
-
-func RegisterSysBlacklist(i ISysBlacklist) {
-	localSysBlacklist = i
-}
-
-func SysConfig() ISysConfig {
-	if localSysConfig == nil {
-		panic("implement not found for interface ISysConfig, forgot register?")
-	}
-	return localSysConfig
-}
-
-func RegisterSysConfig(i ISysConfig) {
-	localSysConfig = i
-}
-
 func SysLog() ISysLog {
 	if localSysLog == nil {
 		panic("implement not found for interface ISysLog, forgot register?")
@@ -527,37 +461,15 @@ func RegisterSysLog(i ISysLog) {
 	localSysLog = i
 }
 
-func SysGenCodes() ISysGenCodes {
-	if localSysGenCodes == nil {
-		panic("implement not found for interface ISysGenCodes, forgot register?")
+func SysProvinces() ISysProvinces {
+	if localSysProvinces == nil {
+		panic("implement not found for interface ISysProvinces, forgot register?")
 	}
-	return localSysGenCodes
+	return localSysProvinces
 }
 
-func RegisterSysGenCodes(i ISysGenCodes) {
-	localSysGenCodes = i
-}
-
-func SysServeLicense() ISysServeLicense {
-	if localSysServeLicense == nil {
-		panic("implement not found for interface ISysServeLicense, forgot register?")
-	}
-	return localSysServeLicense
-}
-
-func RegisterSysServeLicense(i ISysServeLicense) {
-	localSysServeLicense = i
-}
-
-func SysSmsLog() ISysSmsLog {
-	if localSysSmsLog == nil {
-		panic("implement not found for interface ISysSmsLog, forgot register?")
-	}
-	return localSysSmsLog
-}
-
-func RegisterSysSmsLog(i ISysSmsLog) {
-	localSysSmsLog = i
+func RegisterSysProvinces(i ISysProvinces) {
+	localSysProvinces = i
 }
 
 func SysServeLog() ISysServeLog {
@@ -571,6 +483,17 @@ func RegisterSysServeLog(i ISysServeLog) {
 	localSysServeLog = i
 }
 
+func SysAddonsConfig() ISysAddonsConfig {
+	if localSysAddonsConfig == nil {
+		panic("implement not found for interface ISysAddonsConfig, forgot register?")
+	}
+	return localSysAddonsConfig
+}
+
+func RegisterSysAddonsConfig(i ISysAddonsConfig) {
+	localSysAddonsConfig = i
+}
+
 func SysCron() ISysCron {
 	if localSysCron == nil {
 		panic("implement not found for interface ISysCron, forgot register?")
@@ -580,17 +503,6 @@ func SysCron() ISysCron {
 
 func RegisterSysCron(i ISysCron) {
 	localSysCron = i
-}
-
-func SysCronGroup() ISysCronGroup {
-	if localSysCronGroup == nil {
-		panic("implement not found for interface ISysCronGroup, forgot register?")
-	}
-	return localSysCronGroup
-}
-
-func RegisterSysCronGroup(i ISysCronGroup) {
-	localSysCronGroup = i
 }
 
 func SysCurdDemo() ISysCurdDemo {
@@ -604,6 +516,83 @@ func RegisterSysCurdDemo(i ISysCurdDemo) {
 	localSysCurdDemo = i
 }
 
+func SysDictType() ISysDictType {
+	if localSysDictType == nil {
+		panic("implement not found for interface ISysDictType, forgot register?")
+	}
+	return localSysDictType
+}
+
+func RegisterSysDictType(i ISysDictType) {
+	localSysDictType = i
+}
+
+func SysLoginLog() ISysLoginLog {
+	if localSysLoginLog == nil {
+		panic("implement not found for interface ISysLoginLog, forgot register?")
+	}
+	return localSysLoginLog
+}
+
+func RegisterSysLoginLog(i ISysLoginLog) {
+	localSysLoginLog = i
+}
+
+func SysSmsLog() ISysSmsLog {
+	if localSysSmsLog == nil {
+		panic("implement not found for interface ISysSmsLog, forgot register?")
+	}
+	return localSysSmsLog
+}
+
+func RegisterSysSmsLog(i ISysSmsLog) {
+	localSysSmsLog = i
+}
+
+func SysAttachment() ISysAttachment {
+	if localSysAttachment == nil {
+		panic("implement not found for interface ISysAttachment, forgot register?")
+	}
+	return localSysAttachment
+}
+
+func RegisterSysAttachment(i ISysAttachment) {
+	localSysAttachment = i
+}
+
+func SysServeLicense() ISysServeLicense {
+	if localSysServeLicense == nil {
+		panic("implement not found for interface ISysServeLicense, forgot register?")
+	}
+	return localSysServeLicense
+}
+
+func RegisterSysServeLicense(i ISysServeLicense) {
+	localSysServeLicense = i
+}
+
+func SysGenCodes() ISysGenCodes {
+	if localSysGenCodes == nil {
+		panic("implement not found for interface ISysGenCodes, forgot register?")
+	}
+	return localSysGenCodes
+}
+
+func RegisterSysGenCodes(i ISysGenCodes) {
+	localSysGenCodes = i
+}
+
+func SysCronGroup() ISysCronGroup {
+	if localSysCronGroup == nil {
+		panic("implement not found for interface ISysCronGroup, forgot register?")
+	}
+	return localSysCronGroup
+}
+
+func RegisterSysCronGroup(i ISysCronGroup) {
+	localSysCronGroup = i
+}
+
 func SysDictData() ISysDictData {
 	if localSysDictData == nil {
 		panic("implement not found for interface ISysDictData, forgot register?")
@@ -615,13 +604,24 @@ func RegisterSysDictData(i ISysDictData) {
 	localSysDictData = i
 }
 
-func SysProvinces() ISysProvinces {
-	if localSysProvinces == nil {
-		panic("implement not found for interface ISysProvinces, forgot register?")
+func SysGameRoute() ISysGameRoute {
+	if localSysGameRoute == nil {
+		panic("implement not found for interface ISysGameRoute, forgot register?")
 	}
-	return localSysProvinces
+	return localSysGameRoute
 }
 
-func RegisterSysProvinces(i ISysProvinces) {
-	localSysProvinces = i
+func RegisterSysGameRoute(i ISysGameRoute) {
+	localSysGameRoute = i
+}
+
+func SysAddons() ISysAddons {
+	if localSysAddons == nil {
+		panic("implement not found for interface ISysAddons, forgot register?")
+	}
+	return localSysAddons
+}
+
+func RegisterSysAddons(i ISysAddons) {
+	localSysAddons = i
 }

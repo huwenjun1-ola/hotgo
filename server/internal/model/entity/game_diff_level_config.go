@@ -11,6 +11,6 @@ type GameDiffLevelConfig struct {
 	ImgB        string `json:"imgB"        description:"图片B的地址"`
 	Type        string `json:"type"        description:"图片主题类型"`
 	AnswerRects string `json:"answerRects" description:""`
-	Dir         string `json:"dir"         description:"0 左右 1 上下"`
+	Dir         int    `json:"dir"         description:"0 左右 1 上下"`
 	Desc        string `json:"desc"        description:"描述字段，用于内部区分"`
 }

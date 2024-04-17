@@ -21,7 +21,7 @@ type GameDiffLevelConfigUpdateFields struct {
 	ImgB        string `json:"imgB"        dc:"图片B的地址"`
 	Type        string `json:"type"        dc:"图片主题类型"`
 	AnswerRects string `json:"answerRects" dc:"answer_rects"`
-	Dir         string `json:"dir"         dc:"0 左右 1 上下"`
+	Dir         int    `json:"dir"         dc:"0 左右 1 上下"`
 	Desc        string `json:"desc"         dc:"描述"`
 }
 
@@ -31,7 +31,7 @@ type GameDiffLevelConfigInsertFields struct {
 	ImgB        string `json:"imgB"        dc:"图片B的地址"`
 	Type        string `json:"type"        dc:"图片主题类型"`
 	AnswerRects string `json:"answerRects" dc:"answer_rects"`
-	Dir         string `json:"dir"         dc:"0 左右 1 上下"`
+	Dir         int    `json:"dir"         dc:"0 左右 1 上下"`
 	Desc        string `json:"desc"         dc:"描述"`
 }
 
@@ -112,7 +112,7 @@ type GameDiffLevelConfigListModel struct {
 	ImgB        string `json:"imgB"        dc:"图片B的地址"`
 	Type        string `json:"type"        dc:"图片主题类型"`
 	AnswerRects string `json:"answerRects" dc:"answer_rects"`
-	Dir         string `json:"dir"         dc:"0 左右 1 上下"`
+	Dir         int    `json:"dir"         dc:"0 左右 1 上下"`
 	Desc        string `json:"desc"         dc:"描述"`
 }
 
@@ -123,5 +123,5 @@ type GameDiffLevelConfigExportModel struct {
 	ImgB        string `json:"imgB"        dc:"图片B的地址"`
 	Type        string `json:"type"        dc:"图片主题类型"`
 	AnswerRects string `json:"answerRects" dc:"answer_rects"`
-	Dir         string `json:"dir"         dc:"0 左右 1 上下"`
+	Dir         int    `json:"dir"         dc:"0 左右 1 上下"`
 }

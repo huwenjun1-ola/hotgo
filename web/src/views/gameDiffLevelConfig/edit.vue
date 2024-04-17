@@ -18,11 +18,11 @@
           :label-width="100"
           class="py-4"
         >
-          <n-form-item label="图片A的地址" path="imgA">
+          <n-form-item label="原图" path="imgA">
             <FileChooser v-model:value="params.imgA" file-type="image" />
           </n-form-item>
 
-          <n-form-item label="图片B的地址" path="imgB">
+          <n-form-item label="对比图" path="imgB">
             <FileChooser v-model:value="params.imgB" file-type="image" />
           </n-form-item>
 
@@ -34,8 +34,15 @@
           <n-input style="height: 200px" placeholder="请输入answer_rects" v-model:value="params.answerRects" />
           </n-form-item>
 
-          <n-form-item label="左右" path="dir">
-          <n-switch placeholder="请输入0 左右 1 上下" v-model:value="params.dir" :unchecked-value="1" :checked-value="0"/>
+          <n-form-item label="朝向" path="dir">
+              <n-switch v-model:value="params.dir"  :unchecked-value="1" :checked-value="0">
+                <template #checked>
+                  水平
+                </template>
+                <template #unchecked>
+                  垂直
+                </template>
+              </n-switch>
           </n-form-item>
 
           <n-form-item label="描述" path="desc">

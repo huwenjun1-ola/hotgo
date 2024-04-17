@@ -18,7 +18,7 @@ export interface State {
   imgB: string;
   type: string;
   answerRects: string;
-  dir: string;
+  dir: number;
   desc: string;
 }
 
@@ -28,7 +28,7 @@ export const defaultState: State = {
   imgB: '',
   type: '',
   answerRects: '',
-  dir: '',
+  dir: 0,
   desc: '',
 };
 
@@ -68,15 +68,14 @@ export const rules = {
   dir: {
     required: true,
     trigger: ['blur', 'input'],
-    type: 'string',
-    message: '请输入0 左右 1 上下',
+    type: 'number',
   },
 };
 
 export const schemas = ref<FormSchema[]>([
   {
     field: 'levelId',
-    component: 'NInput',
+    component: 'NInputNumber',
     label: '关卡id',
     componentProps: {
       placeholder: '请输入关卡id',
@@ -109,7 +108,7 @@ export const columns = [
     key: 'type',
   },
   {
-    title: '图片A',
+    title: '原图',
     key: 'imgA',
     render(row) {
       return h(NImage, {
@@ -127,7 +126,7 @@ export const columns = [
     },
   },
   {
-    title: '图片B',
+    title: '对比图',
     key: 'imgB',
     render(row) {
       return h(NImage, {
@@ -155,6 +154,7 @@ export const columns = [
     render(row) {
       return h(NSwitch, {
         value: row.dir === 0,
+      },{
         checked: '水平',
         unchecked: '垂直',
       });
