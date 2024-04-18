@@ -8,20 +8,22 @@ package sys
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
-
-	"hotgo/internal/dao"
-	"hotgo/internal/library/hgorm/handler"
-	"hotgo/internal/model/input/form"
-	"hotgo/internal/model/input/sysin"
-	"hotgo/internal/service"
-	"hotgo/utility/convert"
-	"hotgo/utility/excel"
+	"net/url"
+	"time"
 
 	"github.com/gogf/gf/v2/database/gdb"
+	"github.com/gogf/gf/v2/errors/gcode"
 	"github.com/gogf/gf/v2/errors/gerror"
+	"github.com/gogf/gf/v2/net/ghttp"
 	"github.com/gogf/gf/v2/os/gctx"
-	"github.com/gogf/gf/v2/util/gconv"
+	"hotgo/internal/dao"
+	"hotgo/internal/library/contexts"
+	"hotgo/internal/library/hgorm/handler"
+	"hotgo/internal/model"
+	"hotgo/internal/model/input/sysin"
+	"hotgo/internal/service"
 )
 
 type sSysGameDiffLevelConfig struct{}
@@ -59,38 +61,79 @@ func (s *sSysGameDiffLevelConfig) List(ctx context.Context, in *sysin.GameDiffLe
 	if totalCount == 0 {
 		return
 	}
-
-	if err = mod.Fields(sysin.GameDiffLevelConfigListModel{}).Page(in.Page, in.PerPage).OrderDesc(dao.GameDiffLevelConfig.Columns().LevelId).Scan(&list); err != nil {
-		err = gerror.Wrap(err, "获取找茬关卡配置表列表失败，请稍后重试！")
-		return
+	if in.PerPage < 0 {
+		if err = mod.Fields(sysin.GameDiffLevelConfigListModel{}).OrderDesc(dao.GameDiffLevelConfig.Columns().LevelId).Scan(&list); err != nil {
+			err = gerror.Wrap(err, "获取找茬关卡配置表列表失败，请稍后重试！")
+			return
+		}
+	} else {
+		if err = mod.Fields(sysin.GameDiffLevelConfigListModel{}).Page(in.Page, in.PerPage).OrderDesc(dao.GameDiffLevelConfig.Columns().LevelId).Scan(&list); err != nil {
+			err = gerror.Wrap(err, "获取找茬关卡配置表列表失败，请稍后重试！")
+			return
+		}
 	}
+
 	return
 }
 
 // Export 导出找茬关卡配置表
 func (s *sSysGameDiffLevelConfig) Export(ctx context.Context, in *sysin.GameDiffLevelConfigListInp) (err error) {
-	list, totalCount, err := s.List(ctx, in)
+	in.PerPage = -1
+	list, _, err := s.List(ctx, in)
 	if err != nil {
 		return
 	}
 
 	// 字段的排序是依据tags的字段顺序，如果你不想使用默认的排序方式，可以直接定义 tags = []string{"字段名称", "字段名称2", ...}
-	tags, err := convert.GetEntityDescTags(sysin.GameDiffLevelConfigExportModel{})
 	if err != nil {
 		return
 	}
 
 	var (
-		fileName  = "导出找茬关卡配置表-" + gctx.CtxId(ctx) + ".xlsx"
-		sheetName = fmt.Sprintf("索引条件共%v行,共%v页,当前导出是第%v页,本页共%v行", totalCount, form.CalPageCount(totalCount, in.PerPage), in.Page, len(list))
-		exports   []sysin.GameDiffLevelConfigExportModel
+		fileName = "LevelConfig"
 	)
 
-	if err = gconv.Scan(list, &exports); err != nil {
-		return
+	data := make(map[int]sysin.GameDiffLevelConfigExportModel)
+	for _, cfgModel := range list {
+		exportModel := sysin.GameDiffLevelConfigExportModel{
+			LevelId: cfgModel.LevelId,
+			ImgA:    cfgModel.ImgA,
+			ImgB:    cfgModel.ImgA,
+			Type:    cfgModel.Type,
+			Layout:  cfgModel.Layout,
+		}
+		err := json.Unmarshal([]byte(cfgModel.AnswerRects), &exportModel.AnswerRects)
+		if err != nil {
+			panic(err)
+		}
+		data[cfgModel.LevelId] = exportModel
+	}
+	bytes, err := json.MarshalIndent(data, "", "\t")
+	if err != nil {
+		return err
+	}
+	// 强转类型
+	writer := ghttp.RequestFromCtx(ctx).Response.Writer
+	w, ok := interface{}(writer).(*ghttp.ResponseWriter)
+	if !ok {
+		return gerror.New("Response.Writer uninitialized!")
+	}
+	w.Header().Set("Content-Type", "application/octet-stream")
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s.json", url.QueryEscape(fileName)))
+	w.Header().Set("Content-Transfer-Encoding", "binary")
+	w.Header().Set("Access-Control-Expose-Headers", "Content-Disposition")
+	_, err = w.Write(bytes)
+	if err != nil {
+		return err
 	}
 
-	err = excel.ExportByStructs(ctx, tags, exports, fileName, sheetName)
+	// 加入到上下文
+	contexts.SetResponse(ctx, &model.Response{
+		Code:      gcode.CodeOK.Code(),
+		Message:   "export successfully!",
+		Timestamp: time.Now().Unix(),
+		TraceID:   gctx.CtxId(ctx),
+	})
 	return
 }
 
