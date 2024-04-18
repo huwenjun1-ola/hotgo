@@ -20,7 +20,7 @@
 
 
         <n-descriptions-item>
-          <template #label>朝向</template>
+          <template #label>布局</template>
           {{ formValue.dir }}
         </n-descriptions-item>
 
