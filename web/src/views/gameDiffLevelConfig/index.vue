@@ -63,7 +63,7 @@
             type="primary"
             @click="handleExport"
             class="min-left-space"
-            v-if="hasPermission(['/gameDiffLevelConfig/delete'])"
+            v-if="hasPermission(['/gameDiffLevelConfig/export'])"
           >
             <template #icon>
               <n-icon>

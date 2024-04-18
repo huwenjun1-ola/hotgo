@@ -184,17 +184,24 @@ const fields = ['leftTop', 'rightTop', 'rightBottom', 'leftBottom'];
 // 答案数据验证
 function answer_validate(_rule: FormItemRule, value: any, callback: Function) {
   try {
-    const answerObj = JSON.parse(value);
-    // console.log(rule, value, callback, answer);
-    const ok = fields.every((field) => {
-      return hasField(answerObj[field], 'x') && hasField(answerObj[field], 'y');
-    });
-    if (ok) {
-      callback();
+    const answerList = JSON.parse(value);
+    // console.log( value, callback, answerList,Array.isArray(answerList));
+
+    if (!Array.isArray(answerList)) {
+      callback(new Error('坐标点数据格式错误'));
       return;
     }
-
-    callback(new Error('坐标点数据格式错误'));
+    for (const index in answerList) {
+      const answerObj = answerList[index];
+      const ok = fields.every((field) => {
+        return hasField(answerObj[field], 'x') && hasField(answerObj[field], 'y');
+      });
+      if (!ok) {
+        callback(new Error('坐标点数据格式错误'));
+        return;
+      }
+    }
+    callback();
   } catch (e) {
     callback(new Error('坐标点数据格式错误'));
   }
