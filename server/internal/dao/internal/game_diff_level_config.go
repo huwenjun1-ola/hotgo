@@ -21,11 +21,11 @@ type GameDiffLevelConfigDao struct {
 // GameDiffLevelConfigColumns defines and stores column names for table hg_game_diff_level_config.
 type GameDiffLevelConfigColumns struct {
 	LevelId     string // 关卡id
-	ImgA        string // 图片A的地址
-	ImgB        string // 图片B的地址
+	ImgA        string // 原图的地址
+	ImgB        string // 对比图的地址
 	Type        string // 图片主题类型
 	AnswerRects string //
-	Dir         string // 0 左右 1 上下
+	Layout      string // 布局 0 左右 1 上下
 	Desc        string // 描述字段，用于内部区分
 }
 
@@ -36,7 +36,7 @@ var gameDiffLevelConfigColumns = GameDiffLevelConfigColumns{
 	ImgB:        "img_b",
 	Type:        "type",
 	AnswerRects: "answer_rects",
-	Dir:         "dir",
+	Layout:      "layout",
 	Desc:        "desc",
 }
 

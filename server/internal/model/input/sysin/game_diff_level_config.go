@@ -21,7 +21,7 @@ type GameDiffLevelConfigUpdateFields struct {
 	ImgB        string `json:"imgB"        dc:"图片B的地址"`
 	Type        string `json:"type"        dc:"图片主题类型"`
 	AnswerRects string `json:"answerRects" dc:"answer_rects"`
-	Dir         int    `json:"dir"         dc:"0 左右 1 上下"`
+	Layout      int    `json:"layout"         dc:"0 左右 1 上下"`
 	Desc        string `json:"desc"         dc:"描述"`
 }
 
@@ -31,7 +31,7 @@ type GameDiffLevelConfigInsertFields struct {
 	ImgB        string `json:"imgB"        dc:"图片B的地址"`
 	Type        string `json:"type"        dc:"图片主题类型"`
 	AnswerRects string `json:"answerRects" dc:"answer_rects"`
-	Dir         int    `json:"dir"         dc:"0 左右 1 上下"`
+	Layout      int    `json:"layout"         dc:"0 左右 1 上下"`
 	Desc        string `json:"desc"         dc:"描述"`
 }
 
@@ -62,7 +62,7 @@ func (in *GameDiffLevelConfigEditInp) Filter(ctx context.Context) (err error) {
 	}
 
 	// 验证0 左右 1 上下
-	if err := g.Validator().Rules("required").Data(in.Dir).Messages("0 左右 1 上下不能为空").Run(ctx); err != nil {
+	if err := g.Validator().Rules("required").Data(in.Layout).Messages("0 左右 1 上下不能为空").Run(ctx); err != nil {
 		return err.Current()
 	}
 
@@ -112,7 +112,7 @@ type GameDiffLevelConfigListModel struct {
 	ImgB        string `json:"imgB"        dc:"图片B的地址"`
 	Type        string `json:"type"        dc:"图片主题类型"`
 	AnswerRects string `json:"answerRects" dc:"answer_rects"`
-	Dir         int    `json:"dir"         dc:"0 左右 1 上下"`
+	Layout      int    `json:"layout"         dc:"0 左右 1 上下"`
 	Desc        string `json:"desc"         dc:"描述"`
 }
 
@@ -123,5 +123,5 @@ type GameDiffLevelConfigExportModel struct {
 	ImgB        string `json:"imgB"        dc:"图片B的地址"`
 	Type        string `json:"type"        dc:"图片主题类型"`
 	AnswerRects string `json:"answerRects" dc:"answer_rects"`
-	Dir         int    `json:"dir"         dc:"0 左右 1 上下"`
+	Layout      int    `json:"layout"         dc:"0 左右 1 上下"`
 }

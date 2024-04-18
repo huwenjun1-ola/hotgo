@@ -12,10 +12,10 @@ import (
 type GameDiffLevelConfig struct {
 	g.Meta      `orm:"table:hg_game_diff_level_config, do:true"`
 	LevelId     interface{} // 关卡id
-	ImgA        interface{} // 图片A的地址
-	ImgB        interface{} // 图片B的地址
+	ImgA        interface{} // 原图的地址
+	ImgB        interface{} // 对比图的地址
 	Type        interface{} // 图片主题类型
 	AnswerRects interface{} //
-	Dir         interface{} // 0 左右 1 上下
+	Layout      interface{} // 布局 0 左右 1 上下
 	Desc        interface{} // 描述字段，用于内部区分
 }

@@ -21,7 +21,7 @@
 
         <n-descriptions-item>
           <template #label>布局</template>
-          {{ formValue.dir }}
+          {{ formValue.layout }}
         </n-descriptions-item>
 
 

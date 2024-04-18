@@ -17,7 +17,7 @@ export interface State {
   imgB: string;
   type: string;
   answerRects: string;
-  dir: number;
+  layout: number;
   desc: string;
 }
 
@@ -27,7 +27,7 @@ export const defaultState: State = {
   imgB: '',
   type: '',
   answerRects: '',
-  dir: 0,
+  layout: 0,
   desc: '',
 };
 
@@ -63,7 +63,7 @@ export const rules = {
     type: 'string',
     validator: answer_validate,
   },
-  dir: {
+  layout: {
     required: true,
     trigger: ['blur', 'input'],
     type: 'number',
@@ -148,12 +148,12 @@ export const columns = [
   },
   {
     title: '布局',
-    key: 'dir',
+    key: 'layout',
     render(row) {
       return h(
         NSwitch,
         {
-          value: row.dir === 0,
+          value: row.layout === 0,
         },
         {
           checked: '水平',

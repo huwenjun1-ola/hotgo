@@ -34,8 +34,8 @@
           <n-input style="height: 200px" placeholder="请输入answer_rects" v-model:value="params.answerRects" />
           </n-form-item>
 
-          <n-form-item label="布局" path="dir">
-              <n-switch v-model:value="params.dir"  :unchecked-value="1" :checked-value="0">
+          <n-form-item label="布局" path="layout">
+              <n-switch v-model:value="params.layout"  :unchecked-value="1" :checked-value="0">
                 <template #checked>
                   水平
                 </template>
