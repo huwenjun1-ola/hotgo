@@ -115,15 +115,12 @@ type GameDiffLevelConfigListModel struct {
 	Layout      int    `json:"layout"         dc:"0 左右 1 上下"`
 	Desc        string `json:"desc"         dc:"描述"`
 }
-type Vec2 struct {
+
+type AnswerRect struct {
 	X int32 `protobuf:"varint,1,opt,name=x,proto3" json:"x,omitempty"`
 	Y int32 `protobuf:"varint,2,opt,name=y,proto3" json:"y,omitempty"`
-}
-type AnswerRect struct {
-	LeftTop     *Vec2 `protobuf:"bytes,1,opt,name=leftTop,proto3" json:"leftTop,omitempty"`
-	RightTop    *Vec2 `protobuf:"bytes,2,opt,name=rightTop,proto3" json:"rightTop,omitempty"`
-	RightBottom *Vec2 `protobuf:"bytes,3,opt,name=rightBottom,proto3" json:"rightBottom,omitempty"`
-	LeftBottom  *Vec2 `protobuf:"bytes,4,opt,name=leftBottom,proto3" json:"leftBottom,omitempty"`
+	W int32 `protobuf:"varint,3,opt,name=w,proto3" json:"w,omitempty"`
+	H int32 `protobuf:"varint,4,opt,name=h,proto3" json:"h,omitempty"`
 }
 
 // GameDiffLevelConfigExportModel 导出找茬关卡配置表

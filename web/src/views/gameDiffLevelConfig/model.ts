@@ -167,20 +167,11 @@ export const columns = [
     key: 'desc',
   },
 ];
-interface Pos {
-  x: number;
-  y: number;
-}
-interface AnswerRect {
-  leftTop: Pos;
-  rightTop: Pos;
-  rightBottom: Pos;
-  leftBottom: Pos;
-}
-function hasField(obj :Object, field:  string): boolean {
+
+function hasField(obj: Object, field: string): boolean {
   return field in obj;
 }
-const fields = ['leftTop', 'rightTop', 'rightBottom', 'leftBottom'];
+const fields = ['x', 'y', 'w', 'h'];
 // 答案数据验证
 function answer_validate(_rule: FormItemRule, value: any, callback: Function) {
   try {
@@ -194,7 +185,7 @@ function answer_validate(_rule: FormItemRule, value: any, callback: Function) {
     for (const index in answerList) {
       const answerObj = answerList[index];
       const ok = fields.every((field) => {
-        return hasField(answerObj[field], 'x') && hasField(answerObj[field], 'y');
+        return hasField(answerObj, field);
       });
       if (!ok) {
         callback(new Error('坐标点数据格式错误'));
