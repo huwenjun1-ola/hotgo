@@ -72,7 +72,7 @@ var (
 				// 注册插件路由
 				addons.RegisterModulesRouter(ctx, group)
 			})
-
+			s.BindHookHandler("/attachment/*", ghttp.HookBeforeServe, beforeServeHook)
 			// 设置插件静态目录映射
 			addons.AddStaticPath(ctx, s)
 			s.AddStaticPath("/web", "resource/public/admin")
@@ -117,3 +117,9 @@ var (
 		},
 	}
 )
+
+// 附件开启跨域
+func beforeServeHook(r *ghttp.Request) {
+	//glog.Debugf(r.GetCtx(), "beforeServeHook [is file:%v] URI:%s", r.IsFileRequest(), r.RequestURI)
+	r.Response.CORSDefault()
+}
