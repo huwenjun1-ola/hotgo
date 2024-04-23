@@ -32,6 +32,7 @@
 
           <n-form-item label="答案矩形坐标点" path="answerRects">
           <n-input style="height: 200px" placeholder="请输入answer_rects" v-model:value="params.answerRects" />
+            <a @click="onOpenGameEditorUrl">跳转编辑器</a>
           </n-form-item>
 
           <n-form-item label="布局" path="layout">
@@ -61,14 +62,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { onMounted, ref, computed, watch } from 'vue';
-  import { Edit, View } from '@/api/gameDiffLevelConfig';
-  import { rules, options, State, newState } from './model';
-  import { useMessage } from 'naive-ui';
-  import { adaModalWidth } from '@/utils/hotgo';
-  import FileChooser from "@/components/FileChooser/index.vue";
+import {computed, onMounted, ref, watch} from 'vue';
+import {Edit, View} from '@/api/gameDiffLevelConfig';
+import {newState, rules, State} from './model';
+import {useMessage} from 'naive-ui';
+import {adaModalWidth} from '@/utils/hotgo';
+import FileChooser from "@/components/FileChooser/index.vue";
 
-  const emit = defineEmits(['reloadTable', 'updateShowModal']);
+const emit = defineEmits(['reloadTable', 'updateShowModal']);
 
   interface Props {
     showModal: boolean;
@@ -150,6 +151,21 @@
       loadForm(value);
     }
   );
+  function onOpenGameEditorUrl() {
+    let v = params.value;
+    let data = {
+      levelId: v.levelId,
+      imgA: v.imgA,
+      imgB: v.imgB,
+      type: v.type,
+      layout: v.layout,
+      answerRects: '',
+    };
+    try {
+      data.answerRects = JSON.parse(v.answerRects);
+    } catch (e) {}
+    window.open('http://localhost:3309/do?data=' + JSON.stringify(data), 'spotit-editor');
+  }
 </script>
 
 <style lang="less"></style>
