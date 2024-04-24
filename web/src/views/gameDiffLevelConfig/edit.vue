@@ -31,7 +31,7 @@
           </n-form-item>
 
           <n-form-item label="答案矩形坐标点" path="answerRects">
-          <n-input style="height: 200px" placeholder="请输入answer_rects" v-model:value="params.answerRects" />
+          <n-input style="height: 200px" placeholder="请输入answer_rects" type="textarea" v-model:value="params.answerRects" />
             <a @click="onOpenGameEditorUrl">跳转编辑器</a>
           </n-form-item>
 
