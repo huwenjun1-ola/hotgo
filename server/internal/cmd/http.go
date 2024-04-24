@@ -84,7 +84,7 @@ var (
 			hggen.InIt(ctx)
 
 			// 启动tcp服务
-			service.TCPServer().Start(ctx)
+			//service.TCPServer().Start(ctx)
 
 			// 启动服务监控
 			service.AdminMonitor().StartMonitor(ctx)
