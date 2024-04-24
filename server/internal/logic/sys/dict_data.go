@@ -7,6 +7,7 @@ package sys
 
 import (
 	"context"
+
 	"github.com/gogf/gf/v2/errors/gerror"
 	"github.com/gogf/gf/v2/frame/g"
 	"hotgo/internal/consts"
@@ -146,10 +147,7 @@ func (s *sSysDictData) GetTypes(ctx context.Context, id int64) (types []string, 
 
 // Select 获取列表
 func (s *sSysDictData) Select(ctx context.Context, in *sysin.DataSelectInp) (list sysin.DataSelectModel, err error) {
-	mod := dao.SysDictData.Ctx(ctx).Where("type", in.Type)
-	if in.Type != "" {
-		mod = mod.Where("type", in.Type)
-	}
+	mod := dao.SysDictData.Ctx(ctx).Where("type", in.Type).Where("status", consts.StatusEnabled)
 
 	if err = mod.Order("sort asc,id desc").Scan(&list); err != nil {
 		err = gerror.Wrap(err, consts.ErrorORM)
