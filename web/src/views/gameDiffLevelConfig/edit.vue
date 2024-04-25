@@ -164,7 +164,7 @@ const emit = defineEmits(['reloadTable', 'updateShowModal']);
     try {
       data.answerRects = JSON.parse(v.answerRects);
     } catch (e) {}
-    window.open('http://localhost:3309/do?data=' + JSON.stringify(data), 'spotit-editor');
+    window.open('/SpotitEditor/?data=' + JSON.stringify(data), 'spotit-editor');
   }
 </script>
 
