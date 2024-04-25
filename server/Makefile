@@ -12,6 +12,9 @@ build:
 	@cd ../web && yarn build && \cp -rf ./dist/*  ../server$(ADMIN_RESOURCE_PATH)
 	@echo "y" | gf build
 
+.PHONY: buildUbuntu
+buildUbuntu:
+	 gf build main.go -n hotgo -a amd64 -s linux
 # 通过热编译启动所有服务
 .PHONY: all
 all:
