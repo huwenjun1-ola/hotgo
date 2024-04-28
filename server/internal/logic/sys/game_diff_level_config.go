@@ -98,7 +98,7 @@ func (s *sSysGameDiffLevelConfig) Export(ctx context.Context, in *sysin.GameDiff
 		exportModel := sysin.GameDiffLevelConfigExportModel{
 			LevelId: cfgModel.LevelId,
 			ImgA:    cfgModel.ImgA,
-			ImgB:    cfgModel.ImgA,
+			ImgB:    cfgModel.ImgB,
 			Type:    cfgModel.Type,
 			Layout:  cfgModel.Layout,
 		}
