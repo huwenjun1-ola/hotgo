@@ -17,6 +17,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/gogf/gf/v2/os/glog"
 	"hotgo/api/admin/gameroute"
 	"hotgo/internal/model/input/sysin"
 	"hotgo/internal/service"
@@ -113,7 +114,7 @@ func ReloadRoute() {
 	}
 	err = makeConf(list)
 	if err != nil {
-		panic(err)
+		glog.Error(context.TODO(), err)
 
 	}
 
