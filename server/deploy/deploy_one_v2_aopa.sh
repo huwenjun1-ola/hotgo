@@ -42,7 +42,7 @@ fi
 copyfile() {
 #  ./deploy/consul/consul.sh $config $game
   #复制目录过去
-  dirs=("bin" "config"  "resource")
+  dirs=("bin" "manifest" )
   if [[ ${config} == "local" || ${config} == "psdev" ]]; then
     dirs+=("swagger")
   fi
