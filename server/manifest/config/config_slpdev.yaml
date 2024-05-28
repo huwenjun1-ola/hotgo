@@ -41,7 +41,7 @@ hotgo:
 server:
   address: ":8000"                            # 本地监听地址。默认":8000"，多个地址以","号分隔。例如："192.168.2.3:8000,10.0.3.10:8001"
   RunMode: "dev"
-  EnableGameRoute: true
+  EnableGameRoute: false
   openapiPath: "/api.json"                    # OpenAPI接口文档地址
   swaggerPath: "/swagger"                     # 内置SwaggerUI展示地址
   serverRoot: "resource/public"               # 静态文件服务的目录根路径，配置时自动开启静态文件服务。
@@ -229,7 +229,7 @@ queue:
 # Redis. 配置参考：https://goframe.org/pages/viewpage.action?pageId=1114217
 redis:
   default:
-    address: "127.0.0.1:6379"
+    address: "172.16.1.65:6379"
     db: "2"
     pass: ""
     idleTimeout: "20"
@@ -241,7 +241,7 @@ database:
     level: "all"
     stdout: true
   default:
-    link: "mysql:root:tablegame@tcp(192.168.11.48:3306)/hotgo?loc=Local&parseTime=true"
+    link: "mysql:root:tablegame@tcp(172.16.1.67:3306)/hotgo?loc=Local&parseTime=true"
     debug: true
     Prefix: "hg_"
 

@@ -6,6 +6,12 @@
 // @AutoGenerate Version 2.9.8
 package sys
 
+import (
+	"context"
+
+	"github.com/gogf/gf/v2/frame/g"
+)
+
 //
 //var proxyPool = gmap.NewStrAnyMap(true)
 //
@@ -140,5 +146,8 @@ func LanuchGameRouteServer() {
 	//http.HandleFunc("/", route)
 	//address := g.Cfg().MustGet(context.TODO(), "server.RouteMapAddress").String()
 	//log.Fatal(http.ListenAndServe(address, nil))
-	ReloadRoute()
+	enableGameRoute := g.Cfg().MustGet(context.TODO(), "server.EnableGameRoute").Bool()
+	if enableGameRoute {
+		ReloadRoute()
+	}
 }

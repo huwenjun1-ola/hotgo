@@ -40,8 +40,8 @@ hotgo:
 # gf配置，配置参考：https://goframe.org/pages/viewpage.action?pageId=44449486
 server:
   address: ":8000"                            # 本地监听地址。默认":8000"，多个地址以","号分隔。例如："192.168.2.3:8000,10.0.3.10:8001"
-  RunMode: "dev"
-  EnableGameRoute: true
+  RunMode: "prod"
+  EnableGameRoute: false
   openapiPath: "/api.json"                    # OpenAPI接口文档地址
   swaggerPath: "/swagger"                     # 内置SwaggerUI展示地址
   serverRoot: "resource/public"               # 静态文件服务的目录根路径，配置时自动开启静态文件服务。
@@ -241,7 +241,7 @@ database:
     level: "all"
     stdout: true
   default:
-    link: "mysql:root:tablegame@tcp(192.168.11.48:3306)/hotgo?loc=Local&parseTime=true"
+    link: "mysql:game:6FJXXAWJxyRFh9qm@tcp(game-db-slp-master.mysql.polardb.rds.aliyuncs.com:3306)/hotgo?loc=Local&parseTime=true"
     debug: true
     Prefix: "hg_"
 
