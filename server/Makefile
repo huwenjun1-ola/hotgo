@@ -4,6 +4,10 @@ DEPLOY_NAME = "template-single"
 DOCKER_NAME = "template-single"
 ADMIN_RESOURCE_PATH = "/resource/public/admin/"
 
+.PHONY: build_without_front
+build_without_front:
+	 gf build
+
 # 一键编译。编译web前端，并将编译后的包移动到服务端对应静态资源路径下，最后编译服务端
 .PHONY: build
 build:
