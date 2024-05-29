@@ -52,7 +52,7 @@ copyfile() {
       exit 1
     fi
   done
-  cp -rf "${targetPath}/manifest/config/config_${config}.toml" "${targetPath}/manifest/config/config.toml"
+  cp -rf "${targetPath}/manifest/config/config_${config}.yaml" "${targetPath}/manifest/config/config.yaml"
   if [[ $stateful == "stateful" ]];then
       cp -rf "${targetPath}/config/${ADAPTOR}/${game}.toml" "${targetPath}/config/${game}.toml"
   fi
